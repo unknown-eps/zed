@@ -8,7 +8,14 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "git_panel": {
-    "dock": "left"
+    "dock": "left",
+  },
+  "experimental.theme_overrides": {
+    "players": [
+      {
+        "cursor": "#000000",
+      },
+    ],
   },
   "relative_line_numbers": "enabled",
   "git": {
@@ -26,6 +33,12 @@
   "cli_default_open_behavior": "existing_window",
   "window_decorations": "server",
   "title_bar": {
+    "show_menus": false,
+    "show_user_picture": true,
+    "show_user_menu": true,
+    "show_onboarding_banner": false,
+    "show_project_items": true,
+    "show_branch_name": true,
     "show_sign_in": false,
     "show_branch_status_icon": true,
     "button_layout": "platform_default",
