@@ -10,10 +10,11 @@
   "git_panel": {
     "dock": "left",
   },
+  "cursor_blink": false,
   "experimental.theme_overrides": {
     "players": [
       {
-        "cursor": "#000000",
+        // "cursor": "#000000",
       },
     ],
   },
@@ -68,7 +69,7 @@
     "favorite_models": [],
     "model_parameters": [],
   },
-  "ui_font_size": 16,
+  "ui_font_size": 20.0,
   "buffer_font_size": 20.0,
   "theme": {
     "mode": "light",
