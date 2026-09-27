@@ -67,7 +67,7 @@
   },
   "terminal": {
     "font_family": "JetBrainsMono Nerd Font Mono",
-    "font_size": 20.0,
+    "font_size": 16.0,
   },
   "inlay_hints": {
     "enabled": true,
@@ -83,7 +83,7 @@
     "model_parameters": [],
   },
   "ui_font_size": 20.0,
-  "buffer_font_size": 20.0,
+  "buffer_font_size": 16.0,
   "theme": {
     "mode": "light",
     "light": "Bearded Theme Solarized Light",
