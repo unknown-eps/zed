@@ -77,8 +77,10 @@
     "dock": "left",
   },
   "agent": {
+    "threads_sidebar": {
+      "position": "right"
+    },
     "dock": "right",
-    "sidebar_side": "right",
     "favorite_models": [],
     "model_parameters": [],
   },
@@ -87,6 +89,6 @@
   "theme": {
     "mode": "light",
     "light": "Bearded Theme Solarized Light",
-    "dark": "One Dark",
+    "dark": "Catppuccin Frappé - No Italics",
   },
 }

@@ -12,6 +12,13 @@
       // "shift shift": "file_finder::Toggle"
     },
   },
+
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      "shift-s": "vim::PushAddSurrounds"
+    }
+  },
   {
     "context": "Editor && vim_mode == insert",
     "bindings": {
