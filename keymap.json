@@ -31,4 +31,20 @@
       "ctrl-w": null,
     },
   },
+
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      "ctrl-c": "editor::Copy",
+      "ctrl-shift-c": "editor::Copy"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "ctrl-c": "editor::Copy",
+      "ctrl-shift-c": "editor::Copy"
+    }
+  }
+
 ]
