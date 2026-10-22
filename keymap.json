@@ -45,6 +45,11 @@
       "ctrl-c": "editor::Copy",
       "ctrl-shift-c": "editor::Copy"
     }
-  }
-
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-p": ["terminal::SendKeystroke", "ctrl-p"]
+    }
+  },
 ]

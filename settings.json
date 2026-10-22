@@ -89,6 +89,24 @@
   "theme": {
     "mode": "light",
     "light": "Bearded Theme Solarized Light",
-    "dark": "Catppuccin Frappé - No Italics",
+    "dark": "Catppuccin Frappé",
+  },
+  "theme_overrides": {
+    "Bearded Theme Solarized Light": {
+      "vim.normal.background": "#DBEAF0",
+      "vim.normal.foreground": "#005F87",
+
+      "vim.insert.background": "#E7EDCF",
+      "vim.insert.foreground": "#526600",
+
+      "vim.visual.background": "#EEE1EE",
+      "vim.visual.foreground": "#854475",
+
+      "vim.visual_line.background": "#EEE1EE",
+      "vim.visual_line.foreground": "#854475",
+
+      "vim.visual_block.background": "#EEE1EE",
+      "vim.visual_block.foreground": "#854475"
+    }
   },
 }
