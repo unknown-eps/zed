@@ -59,6 +59,11 @@
   },
   "which_key": { "enabled": true, "delay_ms": 200 },
   "colorize_brackets": true,
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "indent_aware",
+    "background_coloring": "indent_aware"
+  },
   "buffer_font_features": { "calt": false },
 "vim_mode": true,
   "vim": {
@@ -89,10 +94,18 @@
   "theme": {
     "mode": "light",
     "light": "Bearded Theme Solarized Light",
-    "dark": "Catppuccin Frappé",
+    "dark": "One Dark",
   },
   "theme_overrides": {
     "Bearded Theme Solarized Light": {
+      "accents": [
+        "#FFD740",
+        "#A8E65C",
+        "#FF80AB",
+        "#64B5F6",
+        "#B388FF",
+        "#64D8CB"
+      ],
       "vim.normal.background": "#DBEAF0",
       "vim.normal.foreground": "#005F87",
 
