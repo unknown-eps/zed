@@ -14,12 +14,6 @@
   },
 
   {
-    "context": "vim_mode == visual",
-    "bindings": {
-      "shift-s": "vim::PushAddSurrounds"
-    }
-  },
-  {
     "context": "Editor && vim_mode == insert",
     "bindings": {
       // "j k": "vim::NormalBefore"
@@ -51,6 +45,7 @@
       "g s a": "vim::PushAddSurrounds",
       "g s r": ["vim::PushChangeSurrounds", {}],
       "g s d": "vim::PushDeleteSurrounds",
+      // Native approximations of Flash jump and Flash Treesitter.
       "s": "vim::HelixJumpToWord",
       "shift-s": "vim::SelectLargerSyntaxNode",
 
@@ -74,6 +69,7 @@
       // Native pickers approximate LazyVim's file/buffer/project pickers.
       "space space": "file_finder::Toggle",
       "space f f": "file_finder::Toggle",
+      // Approximation: this picker includes files, not a dedicated recent-files list.
       "space f r": "file_finder::Toggle",
       "space f b": "tab_switcher::Toggle",
       "space ,": "tab_switcher::Toggle",
@@ -88,11 +84,13 @@
       "space s b": "buffer_search::Deploy",
       "space s s": "outline::Toggle",
       "space s shift-s": "project_symbols::Toggle",
+      // Approximation of LazyVim's richer search/replace tool.
       "space s r": ["pane::DeploySearch", { "replace_enabled": true }],
       "space s k": "zed::OpenKeymap",
       "space s d": "diagnostics::Deploy",
       "space x x": "diagnostics::Deploy",
 
+      // Keep LazyVim's alternate buffer; Space , opens the buffer picker.
       "space b b": "pane::AlternateFile",
       "space `": "pane::AlternateFile",
       "space b d": "pane::CloseActiveItem",
@@ -141,8 +139,13 @@
   {
     "context": "Editor && mode == full && vim_mode == visual && !menu",
     "bindings": {
+      "g s": null,
+      "g s a": "vim::PushAddSurrounds",
+      // Approximation of Flash Treesitter; surrounds use gsa instead.
+      "shift-s": "vim::SelectLargerSyntaxNode",
       "space c a": "editor::ToggleCodeActions",
       "space c f": "editor::FormatSelections",
+      // Approximation of LazyVim's richer search/replace tool.
       "space s r": ["pane::DeploySearch", { "replace_enabled": true }]
     }
   },
