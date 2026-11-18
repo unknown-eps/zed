@@ -78,6 +78,12 @@
       "space f c": "zed::OpenSettingsFile",
       "space f t": "terminal_panel::ToggleFocus",
       "space f shift-t": "terminal_panel::ToggleFocus",
+      // copy-path.nvim defaults, using Zed's native equivalents.
+      // No native equivalent for fl (path:line) or fP (path-format picker).
+      "space f y": "workspace::CopyRelativePath",
+      "space f shift-y": "workspace::CopyPath",
+      "space f shift-n": "editor::CopyFileName",
+      "space f shift-g": "editor::CopyPermalinkToLine",
       "space /": "pane::DeploySearch",
       "space s g": "pane::DeploySearch",
       "space s shift-g": "pane::DeploySearch",
@@ -139,6 +145,7 @@
   {
     "context": "Editor && mode == full && vim_mode == visual && !menu",
     "bindings": {
+      "space f shift-g": "editor::CopyPermalinkToLine",
       "g s": null,
       "g s a": "vim::PushAddSurrounds",
       // Approximation of Flash Treesitter; surrounds use gsa instead.
