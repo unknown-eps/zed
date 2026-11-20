@@ -23,6 +23,10 @@
     "dock": "right",
   },
   "cursor_blink": false,
+  // Match LazyVim: scrolloff=4, ignorecase + smartcase. (Zed has no keyboard
+  // equivalent of sidescrolloff; horizontal_scroll_margin only affects mouse scrolling.)
+  "vertical_scroll_margin": 4,
+  "use_smartcase_search": true,
   "experimental.theme_overrides": {
     "players": [
       {

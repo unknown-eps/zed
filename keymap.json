@@ -34,7 +34,9 @@
   {
     "context": "Terminal",
     "bindings": {
-      "ctrl-p": ["terminal::SendKeystroke", "ctrl-p"]
+      "ctrl-p": ["terminal::SendKeystroke", "ctrl-p"],
+      // LazyVim: Ctrl-/ toggles the terminal from Normal mode and the terminal.
+      "ctrl-/": "terminal_panel::Toggle"
     }
   },
   {
@@ -56,11 +58,24 @@
       "shift-h": "pane::ActivatePreviousItem",
       "shift-l": "pane::ActivateNextItem",
       "g shift-k": "editor::ShowSignatureHelp",
+      // LazyVim's buffer-local gr is nowait, so it fires instantly; no gr* chords.
       "g r": "editor::FindAllReferences",
-      "g r n": "editor::Rename",
-      "g r a": "editor::ToggleCodeActions",
-      "g r r": "editor::FindAllReferences",
-      "g r i": "editor::GoToImplementation",
+      "] ]": "editor::GoToNextDocumentHighlight",
+      "[ [": "editor::GoToPreviousDocumentHighlight",
+      "alt-n": "editor::GoToNextDocumentHighlight",
+      "alt-p": "editor::GoToPreviousDocumentHighlight",
+      "] h": "editor::GoToHunk",
+      "[ h": "editor::GoToPreviousHunk",
+      // Neovim 0.10+: Ctrl-w d shows the diagnostic under the cursor.
+      "ctrl-w d": "editor::Hover",
+      // No-op. A null binding would make Zed replay ctrl-q alone (Visual Block).
+      "ctrl-w ctrl-q": "vim::ClearOperators",
+      "ctrl-/": "terminal_panel::Toggle",
+      // Arrow movement is disabled in Normal mode, as in Neovim and VS Code.
+      "up": null,
+      "down": null,
+      "left": null,
+      "right": null,
       "ctrl-up": "vim::ResizePaneUp",
       "ctrl-down": "vim::ResizePaneDown",
       "ctrl-left": "vim::ResizePaneLeft",
@@ -73,44 +88,86 @@
       "space f r": "file_finder::Toggle",
       "space f b": "tab_switcher::Toggle",
       "space ,": "tab_switcher::Toggle",
+      "space f shift-f": "file_finder::Toggle",
+      "space f g": "file_finder::Toggle",
+      "space f shift-b": "tab_switcher::ToggleAll",
+      "space e": "project_panel::ToggleFocus",
+      "space shift-e": "project_panel::ToggleFocus",
+      "space f e": "project_panel::ToggleFocus",
+      "space f shift-e": "project_panel::ToggleFocus",
+      "space l": "zed::Extensions",
+      // :qa quits one Neovim instance, i.e. one Zed window; zed::Quit closes every window.
+      "space q q": "workspace::CloseWindow",
       "space f p": "projects::OpenRecent",
       "space f n": "workspace::NewFile",
       "space f c": "zed::OpenSettingsFile",
-      "space f t": "terminal_panel::ToggleFocus",
-      "space f shift-t": "terminal_panel::ToggleFocus",
+      // Snacks.terminal() toggle: hide when visible (even unfocused), else open and focus.
+      // The bottom dock's last active panel opens, normally the terminal (or the debugger).
+      "space f t": "workspace::ToggleBottomDock",
+      "space f shift-t": "workspace::ToggleBottomDock",
       // copy-path.nvim defaults, using Zed's native equivalents.
-      // No native equivalent for fl (path:line) or fP (path-format picker).
+      // No native equivalent for fP (path-format picker).
       "space f y": "workspace::CopyRelativePath",
+      // path:line, or path:start-end for a selection, like copy-path.nvim.
+      "space f l": "editor::CopyFileLocation",
       "space f shift-y": "workspace::CopyPath",
       "space f shift-n": "editor::CopyFileName",
       "space f shift-g": "editor::CopyPermalinkToLine",
-      "space /": "pane::DeploySearch",
-      "space s g": "pane::DeploySearch",
-      "space s shift-g": "pane::DeploySearch",
+      "space /": ["pane::DeploySearch", { "regex": true, "whole_word": false, "include_ignored": false }],
+      "space s g": ["pane::DeploySearch", { "regex": true, "whole_word": false, "include_ignored": false }],
+      "space s shift-g": ["pane::DeploySearch", { "regex": true, "whole_word": false, "include_ignored": false }],
       "space s b": "buffer_search::Deploy",
       "space s s": "outline::Toggle",
       "space s shift-s": "project_symbols::Toggle",
       // Approximation of LazyVim's richer search/replace tool.
-      "space s r": ["pane::DeploySearch", { "replace_enabled": true }],
+      "space s r": ["pane::DeploySearch", { "replace_enabled": true, "regex": true, "whole_word": false, "include_ignored": false }],
       "space s k": "zed::OpenKeymap",
+      "space s shift-c": "command_palette::Toggle",
+      // Seeded with the word under the cursor; literal whole-word, like grep_word.
+      // The other grep/replace bindings use regex, like LazyVim's grep and grug-far.
+      "space s w": ["pane::DeploySearch", { "regex": false, "whole_word": true, "include_ignored": false }],
+      "space s shift-w": ["pane::DeploySearch", { "regex": false, "whole_word": true, "include_ignored": false }],
       "space s d": "diagnostics::Deploy",
+      "space s shift-d": "diagnostics::DeployCurrentFile",
       "space x x": "diagnostics::Deploy",
+      "space x shift-x": "diagnostics::DeployCurrentFile",
 
       // Keep LazyVim's alternate buffer; Space , opens the buffer picker.
       "space b b": "pane::AlternateFile",
       "space `": "pane::AlternateFile",
-      "space b d": "pane::CloseActiveItem",
-      "space b o": "pane::CloseOtherItems",
+      // Snacks.bufdelete and BufferLineClose* ignore pins; only bP keeps pinned tabs.
+      "space b d": ["pane::CloseActiveItem", { "close_pinned": true }],
+      "space b o": ["pane::CloseOtherItems", { "close_pinned": true }],
+      "space b l": ["pane::CloseItemsToTheLeft", { "close_pinned": true }],
+      "space b r": ["pane::CloseItemsToTheRight", { "close_pinned": true }],
+      "space b p": "pane::TogglePinTab",
+      // Closes unpinned tabs in every pane (always keeps pinned ones).
+      "space b shift-p": "workspace::CloseAllItemsAndPanes",
+      "space b j": "tab_switcher::Toggle",
       "space c a": "editor::ToggleCodeActions",
       "space c r": "editor::Rename",
       "space c f": "editor::Format",
       "space c o": "editor::OrganizeImports",
+      "space c s": "outline_panel::ToggleFocus",
+      "space c d": "editor::Hover",
       "space g g": "git_panel::ToggleFocus",
+      "space g s": "git_panel::ToggleFocus",
       "space g d": "git::Diff",
+      "space g b": "editor::BlameHover",
+      "space g shift-b": "editor::OpenPermalinkToLine",
+      "space g shift-y": "editor::CopyPermalinkToLine",
+      "space g f": "git::FileHistory",
+      "space g l": "git_graph::Open",
+      "space g shift-l": "git_graph::Open",
       "space g h p": "editor::ToggleSelectedDiffHunks",
       "space g h b": "editor::BlameHover",
+      "space g h shift-b": "git::Blame",
       "space g h s": "git::ToggleStaged",
       "space g h r": "git::Restore",
+      // git::StageFile only works in the Git panel. Stage every hunk shown vs HEAD (misses
+      // a staged change the working copy reverted to HEAD), then restore the cursor.
+      "space g h shift-s": ["action::Sequence", ["editor::SelectAll", "git::StageAndNext", "editor::UndoSelection"]],
+      "space g h shift-r": "git::RestoreFile",
 
       "space u w": "editor::ToggleSoftWrap",
       "space u l": "editor::ToggleLineNumbers",
@@ -120,6 +177,10 @@
       "space u b": "theme::ToggleMode",
       "space u shift-c": "theme_selector::Toggle",
       "space u shift-z": "workspace::ToggleZoom",
+      "space u d": "editor::ToggleDiagnostics",
+      "space u z": "workspace::ToggleCenteredLayout",
+      "space u n": "workspace::ClearAllNotifications",
+      "space u shift-i": "dev::OpenSyntaxTreeView",
       "space -": "pane::SplitDown",
       "space w s": "pane::SplitDown",
       "space |": "pane::SplitRight",
@@ -139,13 +200,19 @@
       "] e": ["editor::GoToDiagnostic", { "severity": "error" }],
       "[ e": ["editor::GoToPreviousDiagnostic", { "severity": "error" }],
       "] w": ["editor::GoToDiagnostic", { "severity": "warning" }],
-      "[ w": ["editor::GoToPreviousDiagnostic", { "severity": "warning" }]
+      "[ w": ["editor::GoToPreviousDiagnostic", { "severity": "warning" }],
+      // LazyVim's Treesitter incremental selection.
+      "ctrl-space": "vim::SelectLargerSyntaxNode",
+      // multicursor.nvim: add a cursor above/below. Kept for consistency; KDE overrides ctrl-alt-down (Overview).
+      "ctrl-alt-up": "editor::AddSelectionAbove",
+      "ctrl-alt-down": "editor::AddSelectionBelow"
     }
   },
   {
     "context": "Editor && mode == full && vim_mode == visual && !menu",
     "bindings": {
       "space f shift-g": "editor::CopyPermalinkToLine",
+      "space f l": "editor::CopyFileLocation",
       "g s": null,
       "g s a": "vim::PushAddSurrounds",
       // Approximation of Flash Treesitter; surrounds use gsa instead.
@@ -153,7 +220,28 @@
       "space c a": "editor::ToggleCodeActions",
       "space c f": "editor::FormatSelections",
       // Approximation of LazyVim's richer search/replace tool.
-      "space s r": ["pane::DeploySearch", { "replace_enabled": true }]
+      "space s r": ["pane::DeploySearch", { "replace_enabled": true, "regex": true, "whole_word": false, "include_ignored": false }],
+      "space s w": ["pane::DeploySearch", { "regex": false, "whole_word": true, "include_ignored": false }],
+      "space s shift-w": ["pane::DeploySearch", { "regex": false, "whole_word": true, "include_ignored": false }],
+      "space g shift-b": "editor::OpenPermalinkToLine",
+      "space g shift-y": "editor::CopyPermalinkToLine",
+      "space g h s": "git::ToggleStaged",
+      "space g h r": "git::Restore",
+      // LazyVim keeps the selection after indenting (<gv / >gv).
+      // SendKeystrokes re-dispatches > and < to the next binding in precedence.
+      ">": ["workspace::SendKeystrokes", "> g v"],
+      "<": ["workspace::SendKeystrokes", "< g v"],
+      "] n": "vim::SelectNextSyntaxNode",
+      "[ n": "vim::SelectPreviousSyntaxNode"
+    }
+  },
+  {
+    // blink.cmp in LazyVim: Tab/Ctrl-Space select the next item, Enter accepts.
+    "context": "Editor && showing_completions",
+    "bindings": {
+      "tab": "editor::ContextMenuNext",
+      "shift-tab": "editor::ContextMenuPrevious",
+      "ctrl-space": "editor::ContextMenuNext"
     }
   },
   {
