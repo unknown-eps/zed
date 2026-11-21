@@ -201,8 +201,6 @@
       "[ e": ["editor::GoToPreviousDiagnostic", { "severity": "error" }],
       "] w": ["editor::GoToDiagnostic", { "severity": "warning" }],
       "[ w": ["editor::GoToPreviousDiagnostic", { "severity": "warning" }],
-      // LazyVim's Treesitter incremental selection.
-      "ctrl-space": "vim::SelectLargerSyntaxNode",
       // multicursor.nvim: add a cursor above/below. Kept for consistency; KDE overrides ctrl-alt-down (Overview).
       "ctrl-alt-up": "editor::AddSelectionAbove",
       "ctrl-alt-down": "editor::AddSelectionBelow"
@@ -213,6 +211,8 @@
     "bindings": {
       "space f shift-g": "editor::CopyPermalinkToLine",
       "space f l": "editor::CopyFileLocation",
+      // flash.nvim's Treesitter incremental selection (Visual Ctrl+Space in LazyVim).
+      "ctrl-space": "vim::SelectLargerSyntaxNode",
       "g s": null,
       "g s a": "vim::PushAddSurrounds",
       // Approximation of Flash Treesitter; surrounds use gsa instead.
@@ -236,12 +236,20 @@
     }
   },
   {
-    // blink.cmp in LazyVim: Tab/Ctrl-Space select the next item, Enter accepts.
+    // blink.cmp in this Neovim config (same as VS Code): Tab accepts, Enter inserts a newline.
+    // Neovim's Ctrl+Space toggles the docs; Zed has no such action, so Ctrl+Space keeps
+    // Zed's default (show completions) and the docs appear beside the menu on their own.
     "context": "Editor && showing_completions",
     "bindings": {
-      "tab": "editor::ContextMenuNext",
-      "shift-tab": "editor::ContextMenuPrevious",
-      "ctrl-space": "editor::ContextMenuNext"
+      "tab": "editor::ConfirmCompletion",
+      "enter": "editor::Newline"
+    }
+  },
+  {
+    // Normal-mode Ctrl+Space: append after the cursor and open completions (Neovim's `a` + blink show).
+    "context": "Editor && mode == full && vim_mode == normal && !menu",
+    "bindings": {
+      "ctrl-space": ["workspace::SendKeystrokes", "a ctrl-space"]
     }
   },
   {
